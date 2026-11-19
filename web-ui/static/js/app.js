@@ -208,6 +208,7 @@ class AmneziaApp {
             'raw-config': (el) => this.showRawServerConfig(el.dataset.server),
             'toggle-client': (el) => this.toggleClientSuspend(...ids(el)),
             'client-qr': (el) => { window.Ui.closeDrawer(); this.showClientQRCode(...ids(el)); },
+            'client-vpn-link': (el) => this.copyClientVpnLink(...ids(el)),
             'client-edit': (el) => this.showClientParamsModal(...ids(el)),
             'client-menu': (el) => this.openClientMenu(...ids(el), el),
             'client-diagnosis': (el) => this.showClientDiagnosis(...ids(el)),
@@ -973,8 +974,10 @@ class AmneziaApp {
         try {
             await navigator.clipboard.writeText(String(text || ''));
             this.showTempMessage(`${what} copied`, 'success');
+            return true;
         } catch (_) {
             this.showTempMessage('This browser blocked the clipboard; select the text and copy it instead.', 'error');
+            return false;
         }
     }
 

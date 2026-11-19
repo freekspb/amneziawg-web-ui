@@ -44,10 +44,15 @@ class ModalUi {
                 </div>
                 <p class="text-xs text-center text-gray-700 dark:text-[#bac5d4]">Scan with the AmneziaVPN or AmneziaWG app. The code holds this client's private key.</p>
                 <div class="flex flex-wrap justify-center gap-2">
-                    <button type="button" class="btn btn-primary" data-qr="copy">${icon('copy')}Copy config</button>
+                    <button type="button" class="btn btn-primary" data-qr="copy-link">${icon('copy')}Copy vpn:// link</button>
+                    <button type="button" class="btn btn-secondary" data-qr="copy">${icon('copy')}Copy config</button>
                     <button type="button" class="btn btn-secondary" data-qr="download">${icon('download')}Download .conf</button>
                     <button type="button" class="btn btn-ghost" data-qr="image">${icon('image')}QR image</button>
                 </div>
+                <details class="help w-full text-sm text-gray-800 dark:text-[#d7dee9]">
+                    <summary class="font-medium">VPN link (contains the private key)</summary>
+                    <div class="mt-2">${this.codeBoxHtml(ModalUi.vpnLink(config.clean_config), 'vpnLinkText')}</div>
+                </details>
                 <details class="help w-full text-sm text-gray-800 dark:text-[#d7dee9]">
                     <summary class="font-medium">Config text</summary>
                     <div class="mt-2">${this.codeBoxHtml(config.clean_config, 'configText')}</div>
@@ -59,6 +64,7 @@ class ModalUi {
         const size = Math.max(200, Math.min(320, window.innerWidth - 112));
         this.generateQrIntoContainer(box.querySelector('#qrcode'), config.clean_config, size);
         const fileBase = String(config.client_name || client.name || 'client').replace(/[^A-Za-z0-9._-]+/g, '_');
+        box.querySelector('[data-qr="copy-link"]').addEventListener('click', () => this.copyText(ModalUi.vpnLink(config.clean_config), 'VPN link'));
         box.querySelector('[data-qr="copy"]').addEventListener('click', () => this.copyText(config.clean_config, 'Config'));
         box.querySelector('[data-qr="download"]').addEventListener('click', () => this.downloadClientConfig(serverId, clientId));
         box.querySelector('[data-qr="image"]').addEventListener('click', () => {
@@ -70,6 +76,25 @@ class ModalUi {
             link.click();
         });
         this.markConfigIssued(serverId, clientId);
+    }
+
+    // Amnezia's importer accepts an uncompressed Base64URL native config.
+    static vpnLink(config) {
+        const bytes = new TextEncoder().encode(config);
+        let binary = '';
+        for (const byte of bytes) binary += String.fromCharCode(byte);
+        return 'vpn://' + btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    }
+
+    async copyClientVpnLink(serverId, clientId) {
+        try {
+            const config = await this.getJson(`/api/servers/${serverId}/clients/${clientId}/config-both`);
+            if (await this.copyText(ModalUi.vpnLink(config.clean_config), 'VPN link')) {
+                await this.markConfigIssued(serverId, clientId);
+            }
+        } catch (error) {
+            this.showTempMessage('Could not copy the VPN link: ' + error.message, 'error');
+        }
     }
 
     async markConfigIssued(serverId, clientId) {
