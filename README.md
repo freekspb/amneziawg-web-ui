@@ -24,7 +24,7 @@ docker run -d --name amnezia-web-ui \
   -p 8080:80 -p 51820:51820/udp \
   -v amnezia-data:/etc/amnezia \
   --restart unless-stopped \
-  stalker1211/amneziawg15-web-ui:latest
+  freekspb/amneziawg-web-ui:latest
 ```
 
 Open `http://<host>:8080` (`admin` / `changeme`), change the password in **⚙ → Access**,
@@ -174,9 +174,14 @@ Long I1–I5 can make a config too large for one QR code; then use **Download .c
 
 ## 🐳 Docker Deployment
 
-Image: https://hub.docker.com/r/stalker1211/amneziawg15-web-ui. `:latest` is the
+Image: https://hub.docker.com/r/freekspb/amneziawg-web-ui. `:latest` is the
 newest build, `:2.8` and so on pin a release; the version under the page heading shows
 which one runs. A plain `docker run` is in [Quick start](#-quick-start).
+
+This is a fork of [stalker1211/amneziawg15-web-ui](https://github.com/stalker1211/amneziawg15-web-ui)
+that adds the ability to copy a client's connection profile as a `vpn://` import link.
+The upstream images remain available under the original name; use the image above when
+you want that extra button.
 
 ### Environment variables
 
@@ -210,7 +215,7 @@ needed: the daemon runs in userspace.
 ```yaml
 services:
   amnezia-web-ui:
-    image: stalker1211/amneziawg15-web-ui:latest
+    image: freekspb/amneziawg-web-ui:latest
     container_name: amnezia-web-ui
     ports:
       - "8080:80/tcp"

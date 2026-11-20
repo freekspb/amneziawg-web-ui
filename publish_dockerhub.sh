@@ -30,7 +30,7 @@ cd "$(dirname "$0")"
 # shellcheck source=version.sh
 source ./version.sh
 
-IMAGE_REPO="${IMAGE_REPO:-stalker1211/amneziawg15-web-ui}"
+IMAGE_REPO="${IMAGE_REPO:-freekspb/amneziawg-web-ui}"
 DOCKERFILE="${DOCKERFILE:-Dockerfile}"
 PLATFORMS="${PLATFORMS:-linux/amd64,linux/arm64}"
 
