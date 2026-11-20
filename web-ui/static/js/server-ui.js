@@ -345,6 +345,7 @@ class ServerUi {
                     <span class="track"></span>
                 </label>
                 <button type="button" class="btn btn-ghost btn-sm" data-action="client-qr" data-server="${sid}" data-client="${cid}">${icon('qr', 'w-3.5 h-3.5')}QR</button>
+                <button type="button" class="btn btn-ghost btn-sm" data-action="client-vpn-link" data-server="${sid}" data-client="${cid}" title="Copy an import link containing this client's private key">${icon('copy', 'w-3.5 h-3.5')}vpn://</button>
                 <button type="button" class="btn btn-ghost btn-sm" data-action="client-edit" data-server="${sid}" data-client="${cid}">${icon('edit', 'w-3.5 h-3.5')}Edit</button>
                 <button type="button" class="icon-btn icon-btn-sm" data-action="client-menu" data-server="${sid}" data-client="${cid}" aria-label="More actions for ${safe(client.name)}" aria-haspopup="menu">${icon('dots')}</button>
             </div>
