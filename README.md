@@ -34,7 +34,7 @@ one. Compose and variables: [Docker Deployment](#-docker-deployment).
 ## ✨ Features
 
 - Servers and clients: create, start/stop, rename, suspend, delete
-- Configs as QR code, `.conf` or text
+- Configs as QR code, `.conf`, `vpn://` import link or text
 - AWG 1.5, 2.0, 3.0, 3.1; random parameters per server
 - I1–I5 packets shaped like QUIC or DNS
 - Live traffic per client; graphs for 1 h, 6 h, 24 h; server totals
@@ -171,6 +171,12 @@ server's port is not the protocol's usual one (UDP 443, 53). For other shapes th
 drawer links to [AmneziaWG Architect](https://architect.vai-rice.space).
 
 Long I1–I5 can make a config too large for one QR code; then use **Download .conf**.
+
+A client's config is also available as a `vpn://` import link, which the AmneziaVPN and
+DefaultVPN apps accept directly: **Copy vpn:// link** in the client's row or in its QR
+dialog. The browser only allows clipboard access over HTTPS, so on plain `http://` use
+the **VPN link** text box in the dialog and copy it by hand. Like the `.conf` file and
+the QR code, the link carries the client's private key.
 
 ## 🐳 Docker Deployment
 
